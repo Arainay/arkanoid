@@ -1,6 +1,6 @@
 import { ctx } from '../constants/';
 
-let greande = {
+const greande = {
 	vx: 1,
 	vy: -1,
 	posX: 0,
