@@ -38,11 +38,14 @@ function render() {
 		let dist = Math.sqrt(dx * dx + dy * dy);
 		if (dist < 10) {
 			coal.destroy();
-			if (dx < dy) {
+			if (Math.abs(dx) >= Math.abs(dy)) {
+				console.log('Change X');
 				grenade.vx *= -1;
 			} else {
+				console.log('Change Y');
 				grenade.vy *= -1;
 			}
+			console.log(`dx: ${dx}, dy: ${dy}`);
 		} else {
 			coal.create();
 		}
@@ -73,8 +76,17 @@ function createCoals() {
 	let coals = [];
 	let add = Math.random() < .5 ? .1 : 0;
 	for (let i = 0; i < 1e2; i++) {
-		let posX = Math.floor((Math.random() + add) * 10) * canvasWidth / 10;
-		let posY = Math.floor((Math.random() + add) * 10) * canvasWidth / 10;
+		/*let posX = Math.floor((Math.random() + add) * 10) * canvasWidth / 10;
+		let posY = Math.floor((Math.random() + add) * 10) * canvasWidth / 10;*/
+
+		let posX = i * 10;
+		let posY = 200;
+
+		if (posX >= canvasWidth) {
+			posX -= canvasWidth;
+			posY -= 10;
+		}
+
 		coals.push( new Coal(
 			posX === canvasWidth ? canvasWidth - 10 : posX,
 			posY

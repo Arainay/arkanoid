@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -99,11 +99,11 @@ var _board = __webpack_require__(2);
 
 var _board2 = _interopRequireDefault(_board);
 
-var _grenade = __webpack_require__(3);
+var _grenade = __webpack_require__(4);
 
 var _grenade2 = _interopRequireDefault(_grenade);
 
-var _coal = __webpack_require__(5);
+var _coal = __webpack_require__(3);
 
 var _coal2 = _interopRequireDefault(_coal);
 
@@ -151,11 +151,14 @@ function render() {
 			var dist = Math.sqrt(dx * dx + dy * dy);
 			if (dist < 10) {
 				coal.destroy();
-				if (dx < dy) {
+				if (Math.abs(dx) >= Math.abs(dy)) {
+					console.log('Change X');
 					_grenade2.default.vx *= -1;
 				} else {
+					console.log('Change Y');
 					_grenade2.default.vy *= -1;
 				}
+				console.log('dx: ' + dx + ', dy: ' + dy);
 			} else {
 				coal.create();
 			}
@@ -199,8 +202,17 @@ function createCoals() {
 	var coals = [];
 	var add = Math.random() < .5 ? .1 : 0;
 	for (var i = 0; i < 1e2; i++) {
-		var posX = Math.floor((Math.random() + add) * 10) * _constants.canvasWidth / 10;
-		var posY = Math.floor((Math.random() + add) * 10) * _constants.canvasWidth / 10;
+		/*let posX = Math.floor((Math.random() + add) * 10) * canvasWidth / 10;
+  let posY = Math.floor((Math.random() + add) * 10) * canvasWidth / 10;*/
+
+		var posX = i * 10;
+		var posY = 200;
+
+		if (posX >= _constants.canvasWidth) {
+			posX -= _constants.canvasWidth;
+			posY -= 10;
+		}
+
 		coals.push(new _coal2.default(posX === _constants.canvasWidth ? _constants.canvasWidth - 10 : posX, posY));
 	}
 
@@ -251,62 +263,6 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _constants = __webpack_require__(0);
-
-var greande = {
-	vx: 1,
-	vy: -1,
-	posX: 0,
-	posY: 880,
-	onBoard: true,
-	move: function move(mouseX) {
-		_constants.ctx.save();
-		_constants.ctx.fillStyle = 'red';
-		if (!this.onBoard) {
-			this.posX += this.vx;
-			this.posY += this.vy;
-			if (this.posX > _constants.ctx.canvas.clientWidth - 10 || this.posX < 1) {
-				this.vx *= -1;
-			}
-			if (this.posY < 1) {
-				this.vy *= -1;
-			}
-			_constants.ctx.fillRect(this.posX, this.posY, 10, 10);
-		} else {
-			this.posX = mouseX;
-			_constants.ctx.fillRect(mouseX, 880, 10, 10);
-		}
-		_constants.ctx.restore();
-	}
-};
-
-exports.default = greande;
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _constants = __webpack_require__(0);
-
-var _functions = __webpack_require__(1);
-
-_constants.canvas.addEventListener('mousemove', _functions.mouseMoveHandler);
-_constants.canvas.addEventListener('click', _functions.mouseClickHandler);
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _constants = __webpack_require__(0);
@@ -344,6 +300,62 @@ var Coal = function () {
 }();
 
 exports.default = Coal;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _constants = __webpack_require__(0);
+
+var greande = {
+	vx: 1,
+	vy: -1,
+	posX: 0,
+	posY: 880,
+	onBoard: true,
+	move: function move(mouseX) {
+		_constants.ctx.save();
+		_constants.ctx.fillStyle = 'red';
+		if (!this.onBoard) {
+			this.posX += this.vx;
+			this.posY += this.vy;
+			if (this.posX > _constants.ctx.canvas.clientWidth - 10 || this.posX < 1) {
+				this.vx *= -1;
+			}
+			if (this.posY < 1) {
+				this.vy *= -1;
+			}
+			_constants.ctx.fillRect(this.posX, this.posY, 10, 10);
+		} else {
+			this.posX = mouseX;
+			_constants.ctx.fillRect(mouseX, 880, 10, 10);
+		}
+		_constants.ctx.restore();
+	}
+};
+
+exports.default = greande;
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _constants = __webpack_require__(0);
+
+var _functions = __webpack_require__(1);
+
+_constants.canvas.addEventListener('mousemove', _functions.mouseMoveHandler);
+_constants.canvas.addEventListener('click', _functions.mouseClickHandler);
 
 /***/ })
 /******/ ]);
