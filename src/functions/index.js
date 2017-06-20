@@ -47,6 +47,9 @@ function render() {
 			coal.create();
 		}
 	}
+	if (grenade.posY > ctx.canvas.clientHeight) {
+		gameOver();
+	}
 	window.requestAnimationFrame(render);
 }
 
@@ -79,6 +82,13 @@ function createCoals() {
 	}
 
 	return coals;
+}
+
+function gameOver() {
+	board.width -= board.width / 10;
+	grenade.posY = 880;
+	grenade.posX = mouseX;
+	grenade.onBoard = true;
 }
 
 export default mouseX;

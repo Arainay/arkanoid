@@ -175,6 +175,9 @@ function render() {
 		}
 	}
 
+	if (_grenade2.default.posY > _constants.ctx.canvas.clientHeight) {
+		gameOver();
+	}
 	window.requestAnimationFrame(render);
 }
 
@@ -202,6 +205,13 @@ function createCoals() {
 	}
 
 	return coals;
+}
+
+function gameOver() {
+	_board2.default.width -= _board2.default.width / 10;
+	_grenade2.default.posY = 880;
+	_grenade2.default.posX = mouseX;
+	_grenade2.default.onBoard = true;
 }
 
 exports.default = mouseX;
@@ -261,12 +271,6 @@ var greande = {
 			if (this.posY < 1) {
 				this.vy *= -1;
 			}
-
-			// Game over
-			if (this.posY > _constants.ctx.canvas.clientHeight) {
-				console.log('Game over');
-			}
-
 			_constants.ctx.fillRect(this.posX, this.posY, 10, 10);
 		} else {
 			this.posX = mouseX;

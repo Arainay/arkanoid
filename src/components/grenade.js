@@ -18,13 +18,6 @@ const greande = {
 			if (this.posY < 1) {
 				this.vy *= -1;
 			}
-
-			// Game over
-			if (this.posY > ctx.canvas.clientHeight) {
-				console.log('Game over');
-			}
-
-
 			ctx.fillRect(this.posX, this.posY, 10, 10);
 		} else {
 			this.posX = mouseX;
