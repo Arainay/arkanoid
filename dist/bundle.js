@@ -112,11 +112,18 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var rect = _constants.canvas.getBoundingClientRect();
 var mouseX = 0;
 var renderStart = false;
-
 var coals = createCoals();
+
+// todo добавить управление движением с помощью ракетки
 
 function mouseMoveHandler(e) {
 	mouseX = e.clientX - rect.left - _board2.default.width / 2;
+	var mod = mouseX % 10;
+	if (mod !== 0 && mod < 5) {
+		mouseX -= mod;
+	} else if (mod !== 0 && mod >= 5) {
+		mouseX += 10 - mod;
+	}
 	stabilizeMousePos();
 	!renderStart && render();
 }
@@ -139,8 +146,16 @@ function render() {
 		for (var _iterator = coals[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 			var coal = _step.value;
 
-			if (coal.posX === _grenade2.default.posX && coal.posY === _grenade2.default.posY) {
+			var dx = coal.posX - _grenade2.default.posX;
+			var dy = coal.posY - _grenade2.default.posY;
+			var dist = Math.sqrt(dx * dx + dy * dy);
+			if (dist < 10) {
 				coal.destroy();
+				if (dx < dy) {
+					_grenade2.default.vx *= -1;
+				} else {
+					_grenade2.default.vy *= -1;
+				}
 			} else {
 				coal.create();
 			}
@@ -207,7 +222,6 @@ var _constants = __webpack_require__(0);
 var board = {
 	width: 100,
 	move: function move(mouseX) {
-
 		_constants.ctx.save();
 		_constants.ctx.fillRect(mouseX, 890, this.width, 10);
 		_constants.ctx.restore();
@@ -308,6 +322,7 @@ var Coal = function () {
 	_createClass(Coal, [{
 		key: 'create',
 		value: function create() {
+			if (!this.posX && !this.posY) return;
 			_constants.ctx.save();
 			_constants.ctx.fillStyle = this.color;
 			_constants.ctx.fillRect(this.posX, this.posY, 10, 10);

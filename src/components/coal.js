@@ -9,6 +9,7 @@ export default class Coal {
 	}
 
 	create() {
+		if (!this.posX && !this.posY) return;
 		ctx.save();
 		ctx.fillStyle = this.color;
 		ctx.fillRect(this.posX, this.posY, 10, 10);

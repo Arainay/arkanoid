@@ -6,11 +6,18 @@ import Coal from '../components/coal';
 let rect = canvas.getBoundingClientRect();
 let mouseX = 0;
 let renderStart = false;
-
 let coals = createCoals();
+
+// todo добавить управление движением с помощью ракетки
 
 export function mouseMoveHandler(e) {
 	mouseX = e.clientX - rect.left - board.width / 2;
+	let mod = mouseX % 10;
+	if (mod !== 0 && mod < 5) {
+		mouseX -= mod;
+	} else if (mod !== 0 && mod >= 5) {
+		mouseX += (10 - mod);
+	}
 	stabilizeMousePos();
 	!renderStart && render();
 }
@@ -26,8 +33,16 @@ function render() {
 	renderStart = true;
 	hitBack();
 	for (let coal of coals) {
-		if (coal.posX === grenade.posX && coal.posY === grenade.posY) {
+		let dx = coal.posX - grenade.posX;
+		let dy = coal.posY - grenade.posY;
+		let dist = Math.sqrt(dx * dx + dy * dy);
+		if (dist < 10) {
 			coal.destroy();
+			if (dx < dy) {
+				grenade.vx *= -1;
+			} else {
+				grenade.vy *= -1;
+			}
 		} else {
 			coal.create();
 		}
